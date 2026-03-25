@@ -15,6 +15,8 @@ export const Experience = () => {
         "3859814441197244330.vrm",
         "3636451243928341470.vrm",
         "8087383217573817818.vrm",
+        "untitled.vrm"
+        
       ],
     },
   });
@@ -33,10 +35,19 @@ export const Experience = () => {
       <group position-y={-1.25}>
         <VRMAvatar avatar={avatar} />
         <Gltf
-          src="models/sound-stage-final.glb"
-          position-z={-1.4}
-          position-x={-0.5}
+          src="models/stage-1.glb"
+          position-z={-0.1}
+          position-x={-0.2}
+          position-y={-0.35}
           scale={0.65}
+        />
+         <Gltf
+          src="models/micro.glb"
+          position-z={0.35}
+          position-x={-0.96}
+          position-y={-0.3}
+          rotation={[0, Math.PI, 0]}
+          scale={0.094}
         />
       </group>
       <EffectComposer>

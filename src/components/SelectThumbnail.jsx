@@ -40,11 +40,11 @@ const SelectThumbnail = () => {
 
   return (
     <section className="fixed inset-0 z-10 flex items-center justify-center pointer-events-none">
-      <div className="absolute right-4 w-[300px] h-[400px] rounded-2xl bg-white/10 backdrop-blur-xs">
+      <div className="absolute right-4 w-[300px] h-[400px] overflow-hidden rounded-2xl bg-white/10 backdrop-blur-xs">
         <div className="w-full flex items-center justify-center py-3 border-b border-white/10 text-white font-semibold mb-5">
           Chọn người mẫu
         </div>
-        <div className="flex-1 overflow-auto flex flex-col gap-5">
+        <div className=" overflow-auto flex flex-col gap-5">
           {arrModels.map((model) => {
             const isSelected = selectedVideo && selectedVideo === model.video;
             return (

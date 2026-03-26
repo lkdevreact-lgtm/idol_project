@@ -12,12 +12,8 @@ import { useVideoRecognition } from "../hooks/useVideoRecognition";
 
 export const CameraWidget = () => {
   const [start, setStart] = useState(false);
-  const [videoFile, setVideoFile] = useState(null);
   const videoElement = useRef();
   const drawCanvas = useRef();
-  const fileInputRef = useRef();
-  const animFrameRef = useRef();
-  const holisticRef = useRef();
   const setVideoElement = useVideoRecognition((state) => state.setVideoElement);
 
   const drawResults = (results) => {
@@ -73,8 +69,15 @@ export const CameraWidget = () => {
     });
   };
 
-  // Khởi tạo Holistic một lần và lưu vào ref
-  const initHolistic = () => {
+  useEffect(() => {
+    if (!start) {
+      setVideoElement(null);
+      return;
+    }
+    if (useVideoRecognition.getState().videoElement) {
+      return;
+    }
+    setVideoElement(videoElement.current);
     const holistic = new Holistic({
       locateFile: (file) => {
         return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.5.1635989137/${file}`;
@@ -91,18 +94,6 @@ export const CameraWidget = () => {
       drawResults(results);
       useVideoRecognition.getState().resultsCallback?.(results);
     });
-    holisticRef.current = holistic;
-    return holistic;
-  };
-
-  // useEffect cho webcam (giữ nguyên logic gốc)
-  useEffect(() => {
-    if (!start || videoFile) return;
-    if (useVideoRecognition.getState().videoElement) return;
-
-    setVideoElement(videoElement.current);
-    const holistic = initHolistic();
-
     const camera = new Camera(videoElement.current, {
       onFrame: async () => {
         await holistic.send({ image: videoElement.current });
@@ -111,116 +102,19 @@ export const CameraWidget = () => {
       height: 480,
     });
     camera.start();
-
-    return () => {
-      camera.stop?.();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [start, videoFile]);
-
-  // useEffect cho video file – dùng requestAnimationFrame để loop frame
-  useEffect(() => {
-    if (!start || !videoFile) return;
-
-    setVideoElement(videoElement.current);
-    const holistic = initHolistic();
-
-    const videoEl = videoElement.current;
-    videoEl.src = videoFile;
-    videoEl.loop = true;
-    videoEl.muted = true;
-    videoEl.play();
-
-    let running = true;
-
-    const processFrame = async () => {
-      if (!running) return;
-      if (videoEl.readyState >= 2) {
-        await holistic.send({ image: videoEl });
-      }
-      animFrameRef.current = requestAnimationFrame(processFrame);
-    };
-
-    videoEl.onloadeddata = () => {
-      animFrameRef.current = requestAnimationFrame(processFrame);
-    };
-
-    return () => {
-      running = false;
-      cancelAnimationFrame(animFrameRef.current);
-      videoEl.pause();
-      videoEl.src = "";
-      videoEl.onloadeddata = null;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [start, videoFile]);
-
-  // Reset khi tắt
-  useEffect(() => {
-    if (!start) {
-      setVideoElement(null);
-      cancelAnimationFrame(animFrameRef.current);
-      if (videoElement.current) {
-        videoElement.current.pause();
-        videoElement.current.src = "";
-      }
-    }
-  }, [start, setVideoElement]);
-
-  const handleFileUpload = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const url = URL.createObjectURL(file);
-    setVideoFile(url);
-    setStart(true);
-  };
-
-  const handleToggleCamera = () => {
-    setVideoFile(null);
-    setStart((prev) => !prev);
-  };
+  }, [start]);
 
   return (
     <>
-      {/* Nút upload video */}
       <button
-        onClick={() => fileInputRef.current?.click()}
-        className="fixed bottom-4 right-20 cursor-pointer bg-purple-500 hover:bg-purple-700 transition-colors duration-200 flex items-center justify-center z-20 p-4 rounded-full text-white drop-shadow-sm"
-        title="Upload video file"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="size-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
-          />
-        </svg>
-      </button>
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept=".mp4,.webm"
-        className="hidden"
-        onChange={handleFileUpload}
-      />
-
-      {/* Nút bật/tắt webcam */}
-      <button
-        onClick={handleToggleCamera}
+        onClick={() => setStart((prev) => !prev)}
         className={`fixed bottom-4 right-4 cursor-pointer ${
-          start && !videoFile
+          start
             ? "bg-red-500 hover:bg-red-700"
             : "bg-indigo-400 hover:bg-indigo-700"
         } transition-colors duration-200 flex items-center justify-center z-20 p-4 rounded-full text-white drop-shadow-sm`}
       >
-        {!start || videoFile ? (
+        {!start ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -252,8 +146,6 @@ export const CameraWidget = () => {
           </svg>
         )}
       </button>
-
-      {/* Khung hiển thị video + canvas */}
       <div
         className={`absolute z-[999999] bottom-24 right-4 w-[320px] h-[240px] rounded-[20px] overflow-hidden ${
           !start ? "hidden" : ""

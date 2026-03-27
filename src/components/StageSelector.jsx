@@ -4,10 +4,8 @@ import { useState } from "react";
 const STAGES = [
   { id: "stage", name: "Default Stage", path: "models/stage.glb" },
   { id: "stage-1", name: "Stage 1", path: "models/stage-1.glb" },
-  { id: "stage-2", name: "Stage 2", path: "models/stage-2.glb" },
-  { id: "stage-3", name: "Stage 3", path: "models/stage-3.glb" },
-  { id: "stage-4", name: "Stage 4", path: "models/stage-4.glb" },
-  { id: "stage-5", name: "Stage 5", path: "models/stage-5.glb" },
+  { id: "stage-2", name: "Stage 2", path: "models/stage-4.glb" },
+  { id: "stage-3", name: "Stage ", path: "models/stage-5.glb" },
 ];
 
 const DEFAULT_CONFIG = { x: -0.5, z: -1.4, y: 0, scale: 0.65 };

@@ -2,13 +2,12 @@ import { useStageStore } from "../hooks/useStageStore";
 import { useState } from "react";
 
 const STAGES = [
-  { id: "stage", name: "Default Stage", path: "models/stage.glb" },
+  { id: "stage", name: "Default Stage", path: "models/stage-ga.glb" },
   { id: "stage-1", name: "Stage 1", path: "models/stage-1.glb" },
   { id: "stage-2", name: "Stage 2", path: "models/stage-4.glb" },
-  { id: "stage-3", name: "Stage ", path: "models/stage-5.glb" },
 ];
 
-const DEFAULT_CONFIG = { x: -0.5, z: -1.4, y: 0, scale: 0.65 };
+const DEFAULT_CONFIG = { x: -0.1, z: -1.4, y: 0, scale: 0.3 };
 
 export const StageSelector = () => {
   const { selectedStage, setSelectedStage, stageConfigs, updateStageConfig } = useStageStore();

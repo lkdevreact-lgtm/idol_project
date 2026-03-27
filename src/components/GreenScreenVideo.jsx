@@ -18,10 +18,8 @@ const fragmentShader = /* glsl */ `
   void main() {
     vec4 color = texture2D(uTexture, vUv);
 
-    // tránh frame đen lúc đầu
     if (color.r < 0.01 && color.g < 0.01 && color.b < 0.01) discard;
 
-    // đo độ "xanh"
     float greenness = color.g - max(color.r, color.b);
 
     float alpha = 1.0 - smoothstep(
@@ -30,9 +28,16 @@ const fragmentShader = /* glsl */ `
       greenness
     );
 
-    if (alpha < 0.01) discard;
+    // làm viền gọn hơn
+    alpha = pow(alpha, 1.5);
 
-    gl_FragColor = vec4(color.rgb, alpha);
+    if (alpha < 0.02) discard;
+
+    // khử viền xanh
+    vec3 finalColor = color.rgb;
+    finalColor.g = min(finalColor.g, max(finalColor.r, finalColor.b));
+
+    gl_FragColor = vec4(finalColor, alpha);
   }
 `;
 
@@ -44,8 +49,8 @@ export const GreenScreenVideo = ({ videoSrc }) => {
   const uniforms = useMemo(
     () => ({
       uTexture: { value: null },
-      uThreshold: { value: 0.35 },
-      uSmoothing: { value: 0.08 },
+      uThreshold: { value: 0.4 },
+      uSmoothing: { value: 0.06 },
     }),
     []
   );
@@ -99,7 +104,7 @@ export const GreenScreenVideo = ({ videoSrc }) => {
   return (
     <mesh
       ref={meshRef}
-      position={[-0.6, -0.5, -3]}
+      position={[-0.1, -0.2, -5]}
       scale={[1, 2, 1]}
     >
       <planeGeometry args={[1, 1]} />

@@ -6,13 +6,15 @@ import {useVideoStore} from "../hooks/useVideoStore"
 import { useStageStore } from "../hooks/useStageStore";
 import { BlackScreenVideo } from "./BlackScreenVideo";
 
+
 export const Experience = () => {
   const controls = useRef();
   const selectedVideo = useVideoStore((s) => s.selectedVideo);
   const selectedStage = useStageStore((s) => s.selectedStage);
   const stageConfigs = useStageStore((s) => s.stageConfigs);
 
-  const currentConfig = stageConfigs[selectedStage] || { x: -0.5, z: -1.4, y: 0, scale: 0.65 };
+
+  const currentConfig = stageConfigs[selectedStage] || { x: -0.2, z: -2, y: 0, scale: 0.24 };
 
   return (
     <>

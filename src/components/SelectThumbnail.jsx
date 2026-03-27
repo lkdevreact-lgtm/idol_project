@@ -6,7 +6,7 @@ const arrModels = [
     id: 1,
     name: "Model 1",
     image: "/images-modal/avatar-1.jpg",
-    video: "/video/dance-1.mp4",
+    video: "/video/black_1.mp4",
   },
   {
     id: 2,

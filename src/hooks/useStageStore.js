@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 export const useStageStore = create((set) => ({
-  selectedStage: "models/stage.glb",
+  selectedStage: "models/stage-ga.glb",
   stageConfigs: {}, // Maps stage path -> { x, z, scale }
   setSelectedStage: (stagePath) => set({ selectedStage: stagePath }),
   updateStageConfig: (stagePath, config) =>
@@ -9,7 +9,7 @@ export const useStageStore = create((set) => ({
       stageConfigs: {
         ...state.stageConfigs,
         [stagePath]: {
-          ...(state.stageConfigs[stagePath] || { x: -0.5, z: -1.4, y: 0, scale: 0.65 }),
+          ...(state.stageConfigs[stagePath] || { x: -0.1, z: -1.4, y: 0, scale: 0.3 }),
           ...config,
         },
       },

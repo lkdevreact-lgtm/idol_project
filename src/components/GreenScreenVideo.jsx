@@ -58,7 +58,7 @@ export const GreenScreenVideo = ({ videoSrc }) => {
     video.src = videoSrc;
     video.crossOrigin = "anonymous";
     video.loop = true;
-    video.muted = true; // QUAN TRỌNG
+    video.muted = false; // QUAN TRỌNG
     video.playsInline = true;
     video.preload = "auto";
 

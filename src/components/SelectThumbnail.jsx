@@ -6,31 +6,31 @@ const arrModels = [
     id: 1,
     name: "Model 1",
     image: "/images-modal/avatar-1.jpg",
-    video: "/video/pony.mp4",
+    video: "/video/dance-1.mp4",
   },
   {
     id: 2,
     name: "Model 2",
     image: "/images-modal/avatar-1.jpg",
-    video: "/video/font-2.mp4",
+    video: "/video/dance-2.mp4",
   },
   {
     id: 3,
     name: "Model 3",
     image: "/images-modal/avatar-1.jpg",
-    video: "/video/pony.mp4",
+    video: "/video/tieu_my.mp4",
   },
   {
     id: 4,
     name: "Model 4",
     image: "/images-modal/avatar-1.jpg",
-    video: "/video/pony.mp4",
+    video: "/video/dance-3.mp4",
   },
   {
     id: 5,
     name: "Model 5",
     image: "/images-modal/avatar-1.jpg",
-    video: "/video/pony.mp4",
+    video: "/video/dance-4.mp4",
   },
 ];
 
@@ -40,11 +40,14 @@ const SelectThumbnail = () => {
 
   return (
     <section className="fixed inset-0 z-10 flex items-center justify-center pointer-events-none">
-      <div className="absolute right-4 w-[300px] h-[400px] overflow-hidden rounded-2xl bg-white/10 backdrop-blur-xs">
-        <div className="w-full flex items-center justify-center py-3 border-b border-white/10 text-white font-semibold mb-5">
+      <div className="absolute right-4 w-[300px] h-[400px] flex flex-col overflow-hidden rounded-2xl bg-white/10 backdrop-blur-xs">
+        {/* Header */}
+        <div className="flex-shrink-0 flex items-center justify-center py-3 border-b border-white/10 text-white font-semibold">
           Chọn người mẫu
         </div>
-        <div className=" overflow-auto flex flex-col gap-5">
+
+        {/* Scroll area */}
+        <div className="flex-1 overflow-auto flex flex-col gap-5 p-3">
           {arrModels.map((model) => {
             const isSelected = selectedVideo && selectedVideo === model.video;
             return (

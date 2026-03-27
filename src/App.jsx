@@ -5,12 +5,15 @@ import { CameraWidget } from "./components/CameraWidget";
 import { Experience } from "./components/Experience";
 import { UI } from "./components/UI";
 import SelectThumbnail from "./components/SelectThumbnail";
+import { StageSelector } from "./components/StageSelector";
+
 function App() {
   return (
     <>
       <UI />
       {/* <CameraWidget /> */}
       <SelectThumbnail />
+      <StageSelector />
       <Loader />
       <Canvas shadows camera={{ position: [0.25, 0.25, 2], fov: 40 }}>
         <color attach="background" args={["#000"]} />
